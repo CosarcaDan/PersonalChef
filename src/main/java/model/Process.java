@@ -1,5 +1,5 @@
 package model;
 
 public enum Process {
-    BOIDLED,FRIED,STEAMED;
+    BOILED,FRIED,STEAMED,BAKED;
 }

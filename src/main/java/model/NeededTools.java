@@ -2,6 +2,6 @@ package model;
 
 
 public enum NeededTools {
-    OVEN,MIXER,PAN;
+    OVEN,MIXER,PAN,STOVE;
 
 }

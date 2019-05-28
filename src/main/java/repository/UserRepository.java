@@ -6,12 +6,10 @@ import model.User;
 import java.util.List;
 
 public interface UserRepository {
-    public User login(String username, String password);
 
-
-    public void addIngredient(String username, Ingredient ingredient);
-
-    public void deleteIngredient(String username, Ingredient ingredient);
-
-    public List<Ingredient> availableIngredients(User user);
+    User login(String username, String password);
+    void addIngredient(String username, Ingredient ingredient);
+    void deleteIngredient(String username, Ingredient ingredient);
+    List<Ingredient> availableIngredients(User user);
+    void updateRecipePreferenceScore(String username, String recipe, Integer score);
 }

@@ -44,10 +44,6 @@ public class service {
     int minGreatMath = 100;
     int minPerfectMatch = 100;
 
-
-
-
-
     public User login(String username, String password) {
         User user = userRepository.login(username, password);
         if (user != null) {
@@ -193,7 +189,7 @@ public class service {
         return  score;
     }
 
-//todo sort
+    //todo sort
     public List<Recipe> recipesMatch(Process pProcess, Type pType, NeededTools pToolsNOTtoUser, String pCousine, Ingredient pIngredient) {
         List<Recipe> suggestedRecipe = new ArrayList<>();
 
