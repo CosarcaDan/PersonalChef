@@ -8,8 +8,14 @@ import repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class service {
+public class Service {
     private User currentUser;
+
+    public Service(UserRepository userRepository, RecipeRepository recipeRepository) {
+        this.userRepository = userRepository;
+        this.recipeRepository = recipeRepository;
+    }
+
     private UserRepository userRepository;
     private RecipeRepository recipeRepository;
     int incopatibleMatch = -20;
@@ -26,7 +32,7 @@ public class service {
 
     int repededEatenPentalty = -2;
 
-    int recipeThreshold = 0; //todo
+    int recipeThreshold = 5;
 
     int highIngredientWeight = 80;
     int mediumIngredientWeight = 15; //sum of the 3 must be 100
@@ -36,7 +42,7 @@ public class service {
     int highIngredientMin = 60;
     int mediumHighIngredientMin = 75; //high+medium must be higher
 
-    double alternativeWeight = 3 / 4;
+    double alternativeWeight = (double)3 / 4;
 
     int minMatchThreshold = 80;
     int minOkMatch = 90;
@@ -62,14 +68,14 @@ public class service {
         userRepository.deleteIngredient(this.currentUser.getUsername(), ingredient);
     }
 
-    public Double ingredientsMatch(Recipe recipe) {
+    private Double ingredientsMatch(Recipe recipe) {
         int countHighIngredients = 0;
         int countMediumIngredients = 0;
         int countLowIngredients = 0;
         List<Ingredient> availableIngredients = userRepository.availableIngredients(currentUser);
-        double weightHighIngrediets = highIngredientWeight / recipe.getHighImportanceIngredients().size();
-        double weightMediumIngrediets = mediumIngredientWeight / recipe.getMediumImportanceIngredients().size();
-        double weightLowIngrediets = lowIngredientWeight / recipe.getLowImportanceIngredients().size();
+        double weightHighIngrediets = (double)highIngredientWeight / recipe.getHighImportanceIngredients().size();
+        double weightMediumIngrediets = (double)mediumIngredientWeight / recipe.getMediumImportanceIngredients().size();
+        double weightLowIngrediets = (double)lowIngredientWeight / recipe.getLowImportanceIngredients().size();
         double weightSumHighIngredients = 0;
         double weightSumMediumIngredients = 0;
         double weightSumLowIngredients = 0;
@@ -103,7 +109,7 @@ public class service {
                     }
                 }
             }
-            if (weightHighIngrediets + weightMediumIngrediets >= mediumHighIngredientMin) {
+            if (weightSumHighIngredients + weightSumMediumIngredients >= mediumHighIngredientMin) {
                 for (Ingredient lowIngredient : recipe.getLowImportanceIngredients()) {
                     if (availableIngredients.contains(lowIngredient)) {
                         countLowIngredients += 1;
@@ -126,7 +132,7 @@ public class service {
     }
 
     //represents action potential of the first dendrite(aka first level)
-    public Integer ingredientMatchEval(Double im) {
+    private Integer ingredientMatchEval(Double im) {
         if (im < minMatchThreshold) {
             return incopatibleMatch;
         }
@@ -145,10 +151,10 @@ public class service {
         return 0;
     }
 
-    public Integer evalPreferences(Recipe recipe, Process pProcess, Type pType, NeededTools pToolsNOTtoUser, String pCousine, Ingredient pIngredient) {
+    private Integer evalPreferences(Recipe recipe, Process pProcess, Type pType, NeededTools pToolsNOTtoUser, String pCousine, Ingredient pIngredient) {
         Integer score = 0;
         if (pProcess != null) {
-            if (recipe.getType().equals(pProcess))
+            if (recipe.getProcess().equals(pProcess))
                 score += preferedProcess;
         }
         if (pType != null) {
@@ -176,7 +182,7 @@ public class service {
         return score;
     }
 
-    public Integer evalRecipeHistory(Recipe recipe){
+    private Integer evalRecipeHistory(Recipe recipe){
         Integer score=0;
         for(RecipePreferences userRecipePreferences: currentUser.getRecipePreferences()){
             if(userRecipePreferences.getRecipe().equals(recipe)){
@@ -189,9 +195,10 @@ public class service {
         return  score;
     }
 
-    //todo sort
+
     public List<Recipe> recipesMatch(Process pProcess, Type pType, NeededTools pToolsNOTtoUser, String pCousine, Ingredient pIngredient) {
         List<Recipe> suggestedRecipe = new ArrayList<>();
+        List<RecipeWithScore> suggestedRecipewithScore = new ArrayList<>();
 
         Double ingredientsMatch;
         Integer ingredientsScore;
@@ -205,17 +212,48 @@ public class service {
             recipeHistoryScore = evalRecipeHistory(recipe);
             if (ingredientsScore + preferencesScore + recipeHistoryScore >= recipeThreshold) {
                 //some Trashhold for action fire
-                suggestedRecipe.add(recipe);
+                suggestedRecipewithScore.add(new RecipeWithScore(recipe,(ingredientsScore + preferencesScore + recipeHistoryScore)));
             }
+        }
+        suggestedRecipewithScore.sort((r1,r2)->r2.getScore().compareTo(r1.getScore()));
+        for(RecipeWithScore rWS:suggestedRecipewithScore){
+            System.out.println(rWS.getRecipe().getName() + " - " + rWS.getScore());
+            suggestedRecipe.add(rWS.getRecipe());
         }
         return suggestedRecipe;
     }
 
 
-    public Integer enforceRecipe(Recipe recipe){
-        return 1;
+    public void enforceRecipe(Recipe recipe){
+        userRepository.updateRecipePreferenceScore(currentUser.getUsername(), recipe.getName(), 1);
     }
 
+
+    class RecipeWithScore{
+        Recipe recipe;
+        Integer score;
+
+        public RecipeWithScore(Recipe recipe, Integer score) {
+            this.recipe = recipe;
+            this.score = score;
+        }
+
+        public Integer getScore() {
+            return score;
+        }
+
+        public void setScore(Integer score) {
+            this.score = score;
+        }
+
+        public Recipe getRecipe() {
+            return recipe;
+        }
+
+        public void setRecipe(Recipe recipe) {
+            this.recipe = recipe;
+        }
+    }
 
 }
 

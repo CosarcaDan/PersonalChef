@@ -189,12 +189,34 @@ public class UserDatabaseRepository implements UserRepository {
             if(selectScoreResult.next()){
 
                 Integer preferenceScore = selectScoreResult.getInt("PreferenceScore");
-                preferenceScore = preferenceScore + score;
+                Integer totalTimesEaten = selectScoreResult.getInt("TotalTimesEaten");
+                Integer nrOfTimeEatenInLast2Weeks = selectScoreResult.getInt("NrOfTimeEatenInLast2Weeks");
+                if(score == 1) {
+                    totalTimesEaten++;
+                    nrOfTimeEatenInLast2Weeks++;
+                    if (totalTimesEaten < 5 && totalTimesEaten > 0)
+                        preferenceScore = 1;
+                    else if (totalTimesEaten < 15)
+                        preferenceScore = 3;
+                    else if(totalTimesEaten > 15)
+                        preferenceScore = 5;
 
-                PreparedStatement updateScoreStatement = connection.prepareStatement("UPDATE RecipePreferences SET PreferenceScore=? WHERE Username=? AND RecipeName=?");
+                }else{
+                    totalTimesEaten--;
+                    nrOfTimeEatenInLast2Weeks--;
+                    if (totalTimesEaten > -5 && totalTimesEaten < 0)
+                        preferenceScore = -1;
+                    else if (totalTimesEaten > -15)
+                        preferenceScore = -3;
+                    else if(totalTimesEaten < -15)
+                        preferenceScore = -5;
+                }
+                PreparedStatement updateScoreStatement = connection.prepareStatement("UPDATE RecipePreferences SET PreferenceScore=?,TotalTimesEaten=?,NrOfTimeEatenInLast2Weeks=? WHERE Username=? AND RecipeName=?");
                 updateScoreStatement.setInt(1, preferenceScore);
-                updateScoreStatement.setString(2, username);
-                updateScoreStatement.setString(3, recipe);
+                updateScoreStatement.setInt(2, totalTimesEaten);
+                updateScoreStatement.setInt(3, nrOfTimeEatenInLast2Weeks);
+                updateScoreStatement.setString(4, username);
+                updateScoreStatement.setString(5, recipe);
 
                 int updateResult = updateScoreStatement.executeUpdate();
             }
