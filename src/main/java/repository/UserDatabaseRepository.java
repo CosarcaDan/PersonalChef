@@ -132,12 +132,13 @@ public class UserDatabaseRepository implements UserRepository {
 
         try{
 
-            PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO IngredientsUser(Name, User) VALUES(?,?)");
+            PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO IngredientsUser(Name, Username) VALUES(?,?)");
             insertStatement.setString(1, ingredient.getName());
             insertStatement.setString(2, username);
 
             int insertResult = insertStatement.executeUpdate();
 
+            System.out.println("Ingredient added!");
             connection.close();
 
         }catch (SQLException e){
@@ -158,6 +159,7 @@ public class UserDatabaseRepository implements UserRepository {
             deleteStatement.setString(2, username);
 
             int deleteResult = deleteStatement.executeUpdate();
+            System.out.println("Ingredient deleted!");
 
             connection.close();
 
