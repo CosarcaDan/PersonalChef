@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="333.0" prefWidth="290.0" style="-fx-background-color: #660033 #660033;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="333.0" prefWidth="290.0" style="-fx-background-color: #660033 #660033;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
    <children>
       <HBox layoutY="6.0" prefHeight="61.0" prefWidth="290.0">
          <children>
@@ -23,7 +23,7 @@
       </HBox>
       <Pane layoutY="51.0" prefHeight="282.0" prefWidth="290.0">
          <children>
-            <TextField fx:id="textFieldUsername" layoutX="98.0" layoutY="71.0" prefHeight="27.0" prefWidth="171.0" style="-fx-border-color: #ffb3d9; -fx-background-color: #660033; -fx-background-insets: 0; -fx-border-radius: 20;" />
+            <TextField fx:id="textFieldUsername" layoutX="98.0" layoutY="71.0" prefHeight="27.0" prefWidth="171.0" style="-fx-border-color: #ffb3d9; -fx-background-color: #660033; -fx-background-insets: 0; -fx-border-radius: 20; -fx-text-fill: white;" />
             <Label layoutX="24.0" layoutY="75.0" text="Name:" textFill="#f8f1f1">
                <font>
                   <Font size="14.0" />
@@ -38,7 +38,7 @@
             <Separator layoutX="24.0" layoutY="13.0" opacity="0.19" prefHeight="0.0" prefWidth="224.0" style="-fx-background-color: #ffb3d9;" />
             <Button fx:id="sgnIn" layoutX="166.0" layoutY="218.0" mnemonicParsing="false" onMouseClicked="#login" prefHeight="34.0" prefWidth="72.0" style="-fx-background-color: #0066cc;" text="Login" textFill="#f8f5f7" />
             <Button fx:id="exit" layoutX="62.0" layoutY="218.0" mnemonicParsing="false" onMouseClicked="#exit" prefHeight="34.0" prefWidth="72.0" style="-fx-background-color: #ff9900;" text="Exit" textFill="#f2eef0" />
-            <PasswordField fx:id="textFieldPassword" layoutX="98.0" layoutY="121.0" prefHeight="25.0" prefWidth="171.0" style="-fx-background-color: #660033; -fx-border-color: #ffb3d9; -fx-border-radius: 20; -fx-background-insets: 0;" />
+            <PasswordField fx:id="textFieldPassword" layoutX="98.0" layoutY="121.0" prefHeight="25.0" prefWidth="171.0" style="-fx-background-color: #660033; -fx-border-color: #ffb3d9; -fx-border-radius: 20; -fx-background-insets: 0; -fx-text-fill: whhite;" />
          </children>
       </Pane>
    </children>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="692.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RecipeController">
+   <children>
+      <TableView fx:id="table" onMouseClicked="#handleRowSelect" prefHeight="276.0" prefWidth="658.0" AnchorPane.bottomAnchor="124.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columns>
+          <TableColumn fx:id="colName" prefWidth="90.0" text="Name" />
+          <TableColumn fx:id="colCousine" prefWidth="72.0" text="Cousine" />
+            <TableColumn fx:id="colType" prefWidth="76.0" text="Type" />
+            <TableColumn fx:id="colProcess" prefWidth="77.0" text="Process" />
+            <TableColumn fx:id="colTools" prefWidth="76.0" text="Tools" />
+            <TableColumn fx:id="colIngredients" prefWidth="266.0" text="Ingredients" />
+        </columns>
+      </TableView>
+      <Pane layoutX="-1.0" layoutY="281.0" prefHeight="123.0" prefWidth="700.0" style="-fx-background-color: #000000;">
+         <children>
+            <Button fx:id="buttonExit" layoutX="361.0" layoutY="29.0" mnemonicParsing="false" onMouseClicked="#exit" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #ab0505; -fx-text-fill: #ffffff;" text="Cancel" />
+            <Button fx:id="buttonChoose" layoutX="469.0" layoutY="29.0" mnemonicParsing="false" onMouseClicked="#chooseRecipe" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #f2c40d; -fx-text-fill: #ffffff;" text="Save" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

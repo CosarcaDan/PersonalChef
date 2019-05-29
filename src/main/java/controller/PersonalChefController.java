@@ -149,14 +149,14 @@ public class PersonalChefController {
 
         try{
             FXMLLoader loader = new  FXMLLoader();
-            loader.setLocation(RecipeController.class.getResource("/matchedRecipes.fxml"));
+            loader.setLocation(RecipeController.class.getResource("/matchedRecipes2.fxml"));
             Parent root2 = loader.load();
             RecipeController recipeCtrl = loader.getController();
 
             recipeCtrl.loadAllRecipes(recipesList);
             Stage stage = new Stage();
             stage.setTitle("Recipes.");
-            stage.setScene(new Scene(root2, 650, 450));
+            stage.setScene(new Scene(root2, 650, 400));
             recipeCtrl.setStage(stage);
             recipeCtrl.setService(service);
             stage.show();
@@ -167,14 +167,33 @@ public class PersonalChefController {
     }
 
     public void delete(MouseEvent mouseEvent) {
-        service.deleteIngredient(textFieldName.getText());
-        textFieldName.clear();
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+
+        if (textFieldName.getText().isEmpty()){
+            alert.setContentText("Name is empty!");
+            alert.setHeaderText("No given name.");
+            alert.showAndWait();
+        }else{
+            service.deleteIngredient(textFieldName.getText());
+            textFieldName.clear();
+        }
+
     }
 
     public void add(MouseEvent mouseEvent) {
-        List<Ingredient> alternatives = new ArrayList<>();
-        service.addIngredient(textFieldName.getText(), alternatives);
-        textFieldName.clear();
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+
+        if (textFieldName.getText().isEmpty()){
+            alert.setContentText("Name is empty!");
+            alert.setHeaderText("No given name.");
+            alert.showAndWait();
+        }
+        else{
+            List<Ingredient> alternatives = new ArrayList<>();
+            service.addIngredient(textFieldName.getText(), alternatives);
+            textFieldName.clear();
+        }
+
     }
 
     public void exit(MouseEvent mouseEvent) {
